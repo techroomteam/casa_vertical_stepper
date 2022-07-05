@@ -4,24 +4,28 @@ import 'package:flutter/material.dart';
 part "../src/utils/consts.dart";
 
 class CasaVerticalStepperView extends StatefulWidget {
-  final List<StepperStep> steps;
-  final Color? completeColor;
-  final Color? inProgressColor;
-  final Color? upComingColor;
+  List<StepperStep> steps;
+  Color? completeColor;
+  Color? inProgressColor;
+  Color? upComingColor;
+  Color? backgroundColor;
 
   /// this color will apply single color to all seperator line
   /// if this value is null then apply color according to [completeColor], [inProgressColor], [upComingColor]
-  final Color? seperatorColor;
-  final bool isExpandable;
-  final bool showStepStatusWidget;
-  const CasaVerticalStepperView({
+  Color? seperatorColor;
+  bool isExpandable;
+  bool showStepStatusWidget;
+  ScrollPhysics? physics;
+  CasaVerticalStepperView({
     required this.steps,
     this.completeColor,
     this.inProgressColor,
     this.upComingColor,
     this.seperatorColor,
+    this.backgroundColor,
     this.isExpandable = false,
     this.showStepStatusWidget = true,
+    this.physics,
     Key? key,
   }) : super(key: key);
 
@@ -31,10 +35,10 @@ class CasaVerticalStepperView extends StatefulWidget {
 }
 
 class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
-  late final Color completeColor;
-  late final Color inProgressColor;
-  late final Color upComingColor;
-  late List<StepperStep> steps = widget.steps;
+  late Color completeColor;
+  late Color inProgressColor;
+  late Color upComingColor;
+  late List<StepperStep> steps;
 
   late List<GlobalKey> _keys;
 
@@ -50,6 +54,7 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
 
   @override
   Widget build(BuildContext context) {
+    steps = widget.steps;
     return _buildVertical();
   }
 
@@ -64,7 +69,7 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
         ? _buildPanel()
         : ListView(
             shrinkWrap: true,
-            // physics: widget.physics,
+            physics: widget.physics ?? const NeverScrollableScrollPhysics(),
             children: steps
                 .map((step) => Column(
                       key: _keys[steps.indexOf(step)],
@@ -92,7 +97,8 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
       },
       children: steps.map<ExpansionPanel>((StepperStep step) {
         return ExpansionPanel(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          backgroundColor: widget.backgroundColor ??
+              Theme.of(context).scaffoldBackgroundColor,
           canTapOnHeader: true,
           headerBuilder: (BuildContext context, bool isExpanded) {
             return _buildVerticalHeader(step);
@@ -125,16 +131,7 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
           _buildIcon(step),
           Container(
             margin: const EdgeInsetsDirectional.only(start: _kStepSpacing),
-            child: Text(
-              step.title,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: status == StepStatus.upcoming
-                    ? upComingColor
-                    : Colors.black,
-              ),
-            ),
+            child: step.title,
           ),
           const Spacer(),
           status != StepStatus.upcoming && widget.showStepStatusWidget
@@ -159,7 +156,8 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
               child: SizedBox(
                 width: _kLineWidth,
                 child: Container(
-                    color: widget.seperatorColor ?? _stepColor(step.status)),
+                  color: widget.seperatorColor ?? _stepColor(step.status),
+                ),
               ),
             ),
           ),
@@ -205,20 +203,24 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
   }
 
   Widget _trailingWidget(StepStatus status) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5.0),
-          color: status == StepStatus.complete
-              ? _stepColor(status).withOpacity(0.1)
-              : _stepColor(status)),
-      child: Text(
-        stepperStepToString(status),
-        style: TextStyle(
-          color: status == StepStatus.complete ? completeColor : Colors.white,
-          fontSize: 12,
-        ),
-      ),
-    );
+    return status == StepStatus.none
+        ? const SizedBox(width: 0, height: 0)
+        : Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.0),
+                color: status == StepStatus.complete
+                    ? _stepColor(status).withOpacity(0.1)
+                    : _stepColor(status)),
+            child: Text(
+              stepperStepToString(status),
+              style: TextStyle(
+                color: status == StepStatus.complete
+                    ? completeColor
+                    : Colors.white,
+                fontSize: 12,
+              ),
+            ),
+          );
   }
 }

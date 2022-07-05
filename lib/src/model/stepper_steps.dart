@@ -18,11 +18,11 @@ String stepperStepToString(StepStatus status) {
 }
 
 class StepperStep {
-  final String title;
-  final Widget? leading;
-  final Widget view;
-  final Widget? failedView;
-  final StepStatus status;
+  Widget title;
+  Widget? leading;
+  Widget view;
+  Widget? failedView;
+  StepStatus status;
   bool isExpanded;
 
   StepperStep({
