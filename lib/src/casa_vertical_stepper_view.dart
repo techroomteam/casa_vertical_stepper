@@ -5,9 +5,7 @@ part "../src/utils/consts.dart";
 
 class CasaVerticalStepperView extends StatefulWidget {
   final List<StepperStep> steps;
-  final Color? completeColor;
-  final Color? inProgressColor;
-  final Color? upComingColor;
+
   final Color? backgroundColor;
 
   /// this color will apply single color to all seperator line
@@ -18,9 +16,6 @@ class CasaVerticalStepperView extends StatefulWidget {
   final ScrollPhysics? physics;
   const CasaVerticalStepperView({
     required this.steps,
-    this.completeColor,
-    this.inProgressColor,
-    this.upComingColor,
     this.seperatorColor,
     this.backgroundColor,
     this.isExpandable = false,
@@ -53,17 +48,12 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
     return _buildVertical();
   }
 
-  initColors() {
-    completeColor = widget.completeColor ?? _defaultPrimaryColor;
-    inProgressColor = widget.inProgressColor ?? _defaultInProgressColor;
-    upComingColor = widget.upComingColor ?? _defaultUpComingViewColor;
-  }
-
   Widget _buildVertical() {
     return widget.isExpandable
         ? _buildPanel()
         : ListView(
             shrinkWrap: true,
+            padding: EdgeInsets.zero,
             physics: widget.physics ?? const NeverScrollableScrollPhysics(),
             children: steps
                 .map((step) => Visibility(
@@ -121,7 +111,6 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
   }
 
   Widget _buildVerticalHeader(StepperStep step) {
-    StepStatus status = step.status;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: _kStepMargin),
       child: Row(
@@ -132,9 +121,7 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
             child: step.title,
           ),
           const Spacer(),
-          status != StepStatus.upcoming && widget.showStepStatusWidget
-              ? _trailingWidget(status)
-              : const SizedBox(width: 0, height: 0),
+          step.trailing ?? const SizedBox(height: 0, width: 0)
         ],
       ),
     );
@@ -198,27 +185,5 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
               color: inProgressColor, size: iconSize);
       }
     }
-  }
-
-  Widget _trailingWidget(StepStatus status) {
-    return status == StepStatus.none
-        ? const SizedBox(width: 0, height: 0)
-        : Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                color: status == StepStatus.complete
-                    ? _stepColor(status).withOpacity(0.1)
-                    : _stepColor(status)),
-            child: Text(
-              stepperStepToString(status),
-              style: TextStyle(
-                color: status == StepStatus.complete
-                    ? completeColor
-                    : Colors.white,
-                fontSize: 12,
-              ),
-            ),
-          );
   }
 }

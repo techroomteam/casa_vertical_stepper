@@ -20,6 +20,7 @@ String stepperStepToString(StepStatus status) {
 class StepperStep {
   Widget title;
   Widget? leading;
+  Widget? trailing;
   Widget view;
   Widget? failedView;
   StepStatus status;
@@ -32,6 +33,7 @@ class StepperStep {
     this.status = StepStatus.none,
     this.failedView,
     this.leading,
+    this.trailing,
     this.visible = true,
     this.isExpanded = true,
   });
