@@ -23,6 +23,7 @@ class StepperStep {
   Widget view;
   Widget? failedView;
   StepStatus status;
+  bool visible;
   bool isExpanded;
 
   StepperStep({
@@ -31,6 +32,7 @@ class StepperStep {
     this.status = StepStatus.none,
     this.failedView,
     this.leading,
+    this.visible = true,
     this.isExpanded = true,
   });
 }

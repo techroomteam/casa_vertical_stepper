@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 part "../src/utils/consts.dart";
 
 class CasaVerticalStepperView extends StatefulWidget {
-  List<StepperStep> steps;
-  Color? completeColor;
-  Color? inProgressColor;
-  Color? upComingColor;
-  Color? backgroundColor;
+  final List<StepperStep> steps;
+  final Color? completeColor;
+  final Color? inProgressColor;
+  final Color? upComingColor;
+  final Color? backgroundColor;
 
   /// this color will apply single color to all seperator line
   /// if this value is null then apply color according to [completeColor], [inProgressColor], [upComingColor]
-  Color? seperatorColor;
-  bool isExpandable;
-  bool showStepStatusWidget;
-  ScrollPhysics? physics;
-  CasaVerticalStepperView({
+  final Color? seperatorColor;
+  final bool isExpandable;
+  final bool showStepStatusWidget;
+  final ScrollPhysics? physics;
+  const CasaVerticalStepperView({
     required this.steps,
     this.completeColor,
     this.inProgressColor,
@@ -38,23 +38,18 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
   late Color completeColor;
   late Color inProgressColor;
   late Color upComingColor;
-  late List<StepperStep> steps;
+  late List<StepperStep> steps = [];
 
   late List<GlobalKey> _keys;
 
   @override
-  void initState() {
-    initColors();
-    _keys = List<GlobalKey>.generate(
-      widget.steps.length,
-      (int i) => GlobalKey(),
-    );
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    steps = widget.steps;
+    steps.clear();
+    for (var step in widget.steps) {
+      if (step.visible) steps.add(step);
+    }
+    _keys =
+        List<GlobalKey>.generate(widget.steps.length, (int i) => GlobalKey());
     return _buildVertical();
   }
 
@@ -71,13 +66,16 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
             shrinkWrap: true,
             physics: widget.physics ?? const NeverScrollableScrollPhysics(),
             children: steps
-                .map((step) => Column(
-                      key: _keys[steps.indexOf(step)],
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        _buildVerticalHeader(step),
-                        _buildVerticalBody(step),
-                      ],
+                .map((step) => Visibility(
+                      visible: step.visible,
+                      child: Column(
+                        key: _keys[steps.indexOf(step)],
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          _buildVerticalHeader(step),
+                          _buildVerticalBody(step),
+                        ],
+                      ),
                     ))
                 .toList(),
           );
