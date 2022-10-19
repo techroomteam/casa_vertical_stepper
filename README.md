@@ -87,3 +87,8 @@ class _ExampleScreenState extends State<ExampleScreen> {
   }
 }
 ```
+
+Screenshot
+:-------------------------:
+![](https://github.com/techroomteam/casa_vertical_stepper/raw/master/screenshot/1.png)
+

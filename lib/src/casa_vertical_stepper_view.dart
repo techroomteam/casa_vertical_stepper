@@ -77,8 +77,8 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
       // dividerColor: Colors.black,
       expandedHeaderPadding: EdgeInsets.zero,
       expansionCallback: (int index, bool isExpanded) {
-        debugPrint("isExpanded: $isExpanded");
-        debugPrint("isExpanded: $index");
+        // debugPrint("isExpanded: $isExpanded");
+        // debugPrint("isExpanded: $index");
         setState(() {
           widget.steps[index].isExpanded = !isExpanded;
         });
@@ -133,8 +133,10 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
       children: <Widget>[
         PositionedDirectional(
           start: _kStepMargin,
-          top: kTopMargin,
-          bottom: _kStepMargin,
+          // top: kTopMargin,
+          // bottom: _kStepMargin,
+          top: 8,
+          bottom: 8,
           child: SizedBox(
             width: _kStepSize,
             child: Center(

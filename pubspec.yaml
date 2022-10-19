@@ -1,6 +1,6 @@
 name: casa_vertical_stepper
 description: A beatiful vertical stepper view, which give you freedom to show custom view, icons.
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/techroomteam/casa_vertical_stepper.git
 
 environment:

@@ -6,3 +6,7 @@ Intial release
 
 * Change title type from String to Widget
 * Fix UI update issue on setState
+
+## 0.0.3
+
+* Add screenshot to ReadMe
