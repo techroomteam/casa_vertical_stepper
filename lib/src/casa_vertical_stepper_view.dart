@@ -50,7 +50,7 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
   }
 
   Widget _buildVertical() {
-    return widget.isExpandable
+    return widget.isExpandable && steps.isNotEmpty
         ? _buildPanel()
         : ListView(
             shrinkWrap: true,
