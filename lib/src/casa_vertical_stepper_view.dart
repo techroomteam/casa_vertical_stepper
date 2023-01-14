@@ -14,6 +14,7 @@ class CasaVerticalStepperView extends StatefulWidget {
   final bool isExpandable;
   final bool showStepStatusWidget;
   final ScrollPhysics? physics;
+
   const CasaVerticalStepperView({
     required this.steps,
     this.seperatorColor,
@@ -116,11 +117,12 @@ class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
       child: Row(
         children: <Widget>[
           _buildIcon(step),
-          Container(
-            margin: const EdgeInsetsDirectional.only(start: _kStepSpacing),
-            child: step.title,
+          Flexible(
+            child: Container(
+              margin: const EdgeInsetsDirectional.only(start: _kStepSpacing),
+              child: step.title,
+            ),
           ),
-          const Spacer(),
           step.trailing ?? const SizedBox(height: 0, width: 0)
         ],
       ),
