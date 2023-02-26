@@ -1,6 +1,5 @@
 import 'package:casa_vertical_stepper/src/model/stepper_steps.dart';
 import 'package:flutter/material.dart';
-
 part "../src/utils/consts.dart";
 
 class CasaVerticalStepperView extends StatefulWidget {
@@ -11,12 +10,18 @@ class CasaVerticalStepperView extends StatefulWidget {
   /// this color will apply single color to all seperator line
   /// if this value is null then apply color according to [completeColor], [inProgressColor], [upComingColor]
   final Color? seperatorColor;
+  final Color? completeColor;
+  final Color? inProgressColor;
+  final Color? upComingColor;
   final bool isExpandable;
   final bool showStepStatusWidget;
   final ScrollPhysics? physics;
   const CasaVerticalStepperView({
     required this.steps,
     this.seperatorColor,
+    this.completeColor,
+    this.inProgressColor,
+    this.upComingColor,
     this.backgroundColor,
     this.isExpandable = false,
     this.showStepStatusWidget = true,
@@ -30,10 +35,11 @@ class CasaVerticalStepperView extends StatefulWidget {
 }
 
 class _CasaVerticalStepperViewState extends State<CasaVerticalStepperView> {
-  late Color completeColor;
-  late Color inProgressColor;
-  late Color upComingColor;
-  late List<StepperStep> steps = [];
+  late Color completeColor = widget.completeColor ?? _defaultPrimaryColor;
+  late Color inProgressColor =
+      widget.inProgressColor ?? _defaultInProgressColor;
+  late Color upComingColor = widget.upComingColor ?? _defaultUpComingViewColor;
+  List<StepperStep> steps = [];
 
   late List<GlobalKey> _keys;
 
