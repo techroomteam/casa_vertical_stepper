@@ -10,3 +10,7 @@ Intial release
 ## 0.0.3
 
 * Add screenshot to ReadMe
+
+## 0.0.5
+
+* Allow user to pass complete, inprogress, upcoming colors
